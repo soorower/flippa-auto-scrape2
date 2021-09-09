@@ -17,7 +17,7 @@ headers = {
 }
 def flippa_scrape():
     scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive','https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.file']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('gsheets_test_key.json', scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name('sheets-automation-lovefromvlogger.json', scope)
     client = gspread.authorize(creds)
     
     import datetime
@@ -585,15 +585,15 @@ while True:
     time = time1[:5]
     
     if 'am' in str(time1):
-        if '8:00' in str(time):
+        if '8:15' in str(time):
             flippa_scrape()
-        if '8:01' in str(time):
+        if '8:16' in str(time):
             flippa_scrape()
-        if '8:02' in str(time):
+        if '8:17' in str(time):
             flippa_scrape()
-        if '8:03' in str(time):
+        if '8:18' in str(time):
             flippa_scrape()
-        if '8:04' in str(time):
+        if '8:19' in str(time):
             flippa_scrape()
         
     sleep(179)
