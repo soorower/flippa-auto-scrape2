@@ -7,7 +7,7 @@ import json
 from oauth2client.service_account import ServiceAccountCredentials
 from discord_webhook import DiscordWebhook, DiscordEmbed
 webhook = DiscordWebhook(
-    url='https://discord.com/api/webhooks/870155902555127889/DkoLtWR7Y_IN41Dn1eTMIefkY6bdhKyGD55CZGKcfKrMD7LbndfxOn9uxUvgq-y_oz-b', username="Flippa Scraped File")
+    url='https://discord.com/api/webhooks/885738210028834837/1sgVSbCizBNn9U5xApl2cLxoeb2XuTCUlCbA1ziqPKUMltzrDZJCJSvmVYHry3kLd4Bm', username="Flippa Scraped File")
 headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET',
@@ -585,15 +585,15 @@ while True:
     time = time1[:5]
     
     if 'am' in str(time1):
-        if '8:15' in str(time):
+        if '10:09' in str(time):
             flippa_scrape()
-        if '8:16' in str(time):
+        if '10:11' in str(time):
             flippa_scrape()
-        if '8:17' in str(time):
+        if '10:12' in str(time):
             flippa_scrape()
-        if '8:18' in str(time):
+        if '10:13' in str(time):
             flippa_scrape()
-        if '8:19' in str(time):
+        if '10:14' in str(time):
             flippa_scrape()
         
     sleep(179)
