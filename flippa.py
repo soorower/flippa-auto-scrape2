@@ -575,7 +575,7 @@ def flippa_scrape():
     response = webhook.execute()
     webhook.remove_embeds()
     webhook.remove_files()
-    sleep(600)
+    sleep(601)
     
 while True:
     r = requests.get('https://www.timeanddate.com/worldclock/bangladesh/dhaka',headers= headers)
