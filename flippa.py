@@ -585,15 +585,15 @@ while True:
     time = time1[:5]
     
     if 'am' in str(time1):
-        if '10:09' in str(time):
+        if '10:23' in str(time):
             flippa_scrape()
-        if '10:11' in str(time):
+        if '10:24' in str(time):
             flippa_scrape()
-        if '10:12' in str(time):
+        if '10:25' in str(time):
             flippa_scrape()
-        if '10:13' in str(time):
+        if '10:26' in str(time):
             flippa_scrape()
-        if '10:14' in str(time):
+        if '10:27' in str(time):
             flippa_scrape()
         
     sleep(179)
