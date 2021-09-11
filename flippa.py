@@ -575,7 +575,7 @@ def flippa_scrape():
     response = webhook.execute()
     webhook.remove_embeds()
     webhook.remove_files()
-    sleep(601)
+    sleep(1500)
     
 while True:
     r = requests.get('https://www.timeanddate.com/worldclock/bangladesh/dhaka',headers= headers)
@@ -585,15 +585,23 @@ while True:
     time = time1[:5]
     
     if 'am' in str(time1):
-        if '10:23' in str(time):
+        if '8:10' in str(time):
             flippa_scrape()
-        if '10:24' in str(time):
+        elif '8:11' in str(time):
             flippa_scrape()
-        if '10:25' in str(time):
+        elif '8:12' in str(time):
             flippa_scrape()
-        if '10:26' in str(time):
+        elif '8:13' in str(time):
             flippa_scrape()
-        if '10:27' in str(time):
+        elif '8:14' in str(time):
+            flippa_scrape()
+        elif '8:15' in str(time):
+            flippa_scrape()
+        elif '8:16' in str(time):
+            flippa_scrape()
+        elif '8:17' in str(time):
+            flippa_scrape()
+        elif '8:18' in str(time):
             flippa_scrape()
         
     sleep(179)
