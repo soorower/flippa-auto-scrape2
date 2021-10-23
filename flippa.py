@@ -53,10 +53,10 @@ def flippa_scrape():
         link = 'https://flippa.com/search?filter%5Bproperty_type%5D=website,established_website,starter_site&page%5Bsize%5D=7000'
         rs = s.get(link, headers= headers)
         soup = BeautifulSoup(rs.content, 'html5lib')
-        print(soup)
+
         links1 = soup.find("div",attrs={'id':'bootstrap-scope'}).find('script',attrs= {'type':'text/javascript'}).get_text().split('const DEFAULT_SEARCH_PARAMS')[0].split('const FILTER_OPTIONS')[1][2:].split('const STATE = ')[1]
         links1 = links1[:-4]
-        print(links1)
+     
         m = json.loads(links1)
 
 
@@ -119,12 +119,10 @@ def flippa_scrape():
     leng = length - 1
     
     all_links_collected_to_csv = dn['Listing_url'].tolist()
-    domain = dn['Domain'].tolist()
     types = dn['Type'].tolist()
     country_a = dn['Country'].tolist()
     category = dn['Category'].tolist()
     monetization = dn['Monetization'].tolist()
-    site_age = dn['Site Age'].tolist()
     avg_net_profit_per_month = dn['Avg net profit per month $'].tolist()
     avg_monthly_traffic_unique = dn['Avg monthly traffic unique'].tolist()
     bid_price = dn['Bid price $'].tolist()
@@ -144,7 +142,7 @@ def flippa_scrape():
         r = s.post(url, data = login_data, headers = headers)
         counts = 0
         name = 'Flippa'
-        for link,a1,b1,c1,d1,e1,f1,g1,h1,i1,j1 in zip(all_links_collected_to_csv,domain,types,country_a,category,monetization,site_age,avg_net_profit_per_month,avg_monthly_traffic_unique,bid_price,number_of_bids):
+        for link,b1,c1,d1,e1,g1,h1,i1,j1 in zip(all_links_collected_to_csv,types,country_a,category,monetization,avg_net_profit_per_month,avg_monthly_traffic_unique,bid_price,number_of_bids):
             counts += 1
             ids = link.split('/')[3]
             print(counts)
@@ -152,6 +150,15 @@ def flippa_scrape():
             try:
                 rs = s.get(link, headers= headers, timeout = 10)
                 soup = BeautifulSoup(rs.content, 'html.parser')
+
+                try:
+                    website_url = soup.find('div',attrs = {'class':'ListingHero-listingUrl'}).get_text().strip()
+                    if 'http' in website_url:
+                        pass
+                    else:
+                        website_url = 'https://' + website_url
+                except:
+                    website_url = '-'
     #----------------------------------------------------------------------------------------------
                 try:
                     platform = soup.find('div',attrs= {'id':'platform'}).get_text().strip()    
@@ -392,7 +399,6 @@ def flippa_scrape():
                     backlinks = soup.findAll('h3',attrs= {'class':'Semrush__attribute-value u-mgn-top-15'})[1].get_text()
                 except:
                     backlinks = '-'
-                print(backlinks)
 
         #----------------------------------------------------------------------------------------------       
                 try:
@@ -476,24 +482,252 @@ def flippa_scrape():
                     seller_name = soup.find('div',attrs= {'class':'about-the-seller__name'}).get_text().strip()
                 except:
                     seller_name = '-'
-                print(seller_name)
                 try:
                     total_keywords = soup.findAll('h3',attrs= {'class':'Semrush__attribute-value u-mgn-top-15'})[2].get_text()
                 except:
                     total_keywords = '-' 
+                try:
+                    site_age = soup.find('div',attrs ={'id':'site_age'}).text.strip()
+                except:
+                    site_age = '-'
             except:
-                a1 = '-'
                 b1 = '-'
                 c1 = '-'
                 d1 = '-'
                 e1 = '-'
-                f1 = '-'
                 g1 = '-'
                 h1 = '-'
                 i1 = '-'
                 j1 = '-'
                 seller_name = '-'
                 backlinks = '-'
+        #----------------------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------------------
+            if website_url == '-':
+                try:
+                    website_url = soup.find('div',attrs = {'class':'Onboarding__content mb-4 mb-md-6'}).find('div').find('a')['href']
+                except:
+                    website_url = '-'
+            if platform == '-':
+                try:
+                    platform = soup.find('div',attrs = {'class':'col-md-6 mt-4 mt-md-0'}).find('h5').text.strip()
+                except:
+                    platform = '-'
+            if avg_rev_per_month == '-':
+                try:
+                    avg_rev_per_month = soup.findAll('div',attrs = {'class':'self-align-end'})[2].find('span').text.strip()
+                except:
+                    avg_rev_per_month = '-'
+            if buy_now_price == '-':
+                try:
+                    buy_now_price = soup.find('a',attrs = {'class':'btn btn-block btn-primary-light-blue mb-3'}).text.replace('Buy It Now for ','').strip()
+                except:
+                    buy_now_price = '-'
+            if description == '-':
+                try:
+                    description = soup.find('div',attrs = {'id':'description-section'}).get_text().strip()
+                except:
+                    description = '-'
+            if site_age == '-':
+                try:
+                    site_age = soup.find('div',attrs = {'class':'mr-4 mb-3'}).find('h5').text
+                except:
+                    site_age = '-'
+            if backlinks == '-':
+                try:
+                    semrush_box = soup.find('div',attrs = {'id':'semrush'}).find('div',attrs = {'class':'row mt-4 pt-2'})
+                    backlinks = semrush_box.findAll('div')[3].text.replace('Backlinks','').strip()
+                except:
+                    backlinks = '-'
+            if reffering_domains == '-':
+                try:
+                    semrush_box = soup.find('div',attrs = {'id':'semrush'}).find('div',attrs = {'class':'row mt-4 pt-2'})
+                    reffering_domains = semrush_box.findAll('div')[2].text.replace('Referring Domains','').strip()
+                except:
+                    reffering_domains = '-'
+            if total_keywords == '-':
+                try:
+                    semrush_box = soup.find('div',attrs = {'id':'semrush'}).find('div',attrs = {'class':'row mt-4 pt-2'})
+                    total_keywords = semrush_box.findAll('div')[4].text.replace('Total Keywords','').strip()
+                except:
+                    total_keywords = '-'
+            if seller_name == '-':
+                try:  
+                    seller_name = soup.find('span',attrs = {'class':'font-size-medium-small font-weight-bold'}).text.strip()
+                except:
+                    seller_name = '-'
+        #-----------------------country and channel list------------------------------------------------------------------------------------------------------
+            if channel_1 == '-':
+                try:
+                    finan_record = soup.findAll('div',attrs = {'id':'financials'})
+                    if len(finan_record) == 2:
+                        channel_table = finan_record[1].findAll('table')[0].find('tbody').findAll('tr')
+                    elif len(finan_record) == 1:
+                        if soup.find('div',attrs = {'id':'financials'}).find('div').find('div').find('h5').get_text() == 'Google Analytics':
+                            channel_table = soup.find('div',attrs = {'id':'financials'}).findAll('table')[0].find('tbody').findAll('tr')
+                        else:
+                            channel_table = []
+                    else:
+                        channel_table = []
+                except:
+                    channel_table = []
+                try:
+                    channel_1 = channel_table[0].find('td').text.strip()
+                except:
+                    channel_1 = '-'
+                try:
+                    channel_2 = channel_table[1].find('td').text.strip()
+                except:
+                    channel_2 = '-'
+                try:
+                    channel_3 = channel_table[2].find('td').text.strip()
+                except:
+                    channel_3 = '-'
+                try:
+                    channel_4 = channel_table[3].find('td').text.strip()
+                except:
+                    channel_4 = '-'
+                try:
+                    channel_5 = channel_table[4].find('td').text.strip()
+                except:
+                    channel_5 = '-'
+            if country_1 == '-':
+                try:
+                    finan_record = soup.findAll('div',attrs = {'id':'financials'})
+                    if len(finan_record) == 2:
+                        country_table = finan_record[1].findAll('table')[1].find('tbody').findAll('tr')
+                    elif len(finan_record) == 1:
+                        if soup.find('div',attrs = {'id':'financials'}).find('div').find('div').find('h5').get_text() == 'Google Analytics':
+                            country_table = soup.find('div',attrs = {'id':'financials'}).findAll('table')[1].find('tbody').findAll('tr')
+                        else:
+                            country_table = []
+                    else:
+                        country_table = []
+                except:
+                    country_table = []
+                try:
+                    country_1 = country_table[0].find('td').text.strip()
+                except:
+                    country_1 = '-'
+                try:
+                    country_2 = country_table[1].find('td').text.strip()
+                except:
+                    country_2 = '-'
+                try:
+                    country_3 = country_table[2].find('td').text.strip()
+                except:
+                    country_3 = '-'
+                try:
+                    country_4 = country_table[3].find('td').text.strip()
+                except:
+                    country_4 = '-'
+                try:
+                    country_5 = country_table[4].find('td').text.strip()
+                except:
+                    country_5 = '-'
+        #---------------------------revenues data---------------------------------------------------------------------------------------------------
+            if revenues == '-':
+                try:
+                    profit_rev_table = soup.find('table',attrs = {'class':'table table-bordered mt-4'}).find('tbody').findAll('tr')
+                    dates_list = []
+                    for date in profit_rev_table:
+                        dates_list.append(date.find('td').text.strip())
+                    profits_list = []
+                    for prof in profit_rev_table:
+                        profits_list.append(prof.findAll('td')[3].text.strip())
+                    revenues_list = []
+                    for rev in profit_rev_table:
+                        revenues_list.append(rev.findAll('td')[1].text.strip())
+
+                    profits = ''
+                    for da,pr in zip(dates_list,profits_list):
+                        profits = profits + f'{da}: {pr}' + '\n'
+                    profits = profits.strip()
+
+                    revenues = ''
+                    for da,re in zip(dates_list,revenues_list):
+                        revenues = revenues + f'{da}: {re}' + '\n'
+                    revenues = revenues.strip()
+                except:
+                    revenues = '-'
+        #-----------------------------------------------------------------------------------------------------------------------------
+            if traffics == '-':
+                try:
+                    traffic_box = soup.find('div',attrs = {'id':'traffic-detailed-graph'})
+                    traffic1 = traffic_box['data-series-values'].split(',')
+                    traffic = []
+                    for tra in traffic1:
+                        tra = tra.replace('[','').replace(']','').replace('[[','').replace(']]','')
+                        traffic.append(tra)
+                except:
+                    pass
+                traffic_date = []
+                try:
+                    traffic_date1 = traffic_box['data-categories'].split(',')
+                    for n in traffic_date1:
+                        an = n[1:-1].replace('"','')
+                        bn = an[:-2] + '20' + an[-2:]
+                        traffic_date.append(bn)
+                except:
+                    pass
+                
+                
+                #---------------------------traffic data sorting------------------------------------------------
+                try:
+                    traffics = '-'
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}"
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}"
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}\n{traffic_date[2]} : {traffic[2]}"
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}\n{traffic_date[2]} : {traffic[2]}\n{traffic_date[3]} : {traffic[3]}"
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}\n{traffic_date[2]} : {traffic[2]}\n{traffic_date[3]} : {traffic[3]}\n{traffic_date[4]} : {traffic[4]}"
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}\n{traffic_date[2]} : {traffic[2]}\n{traffic_date[3]} : {traffic[3]}\n{traffic_date[4]} : {traffic[4]}\n{traffic_date[5]} : {traffic[5]}"
+                except:
+                    pass 
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}\n{traffic_date[2]} : {traffic[2]}\n{traffic_date[3]} : {traffic[3]}\n{traffic_date[4]} : {traffic[4]}\n{traffic_date[5]} : {traffic[5]}\n{traffic_date[6]} : {traffic[6]}" 
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}\n{traffic_date[2]} : {traffic[2]}\n{traffic_date[3]} : {traffic[3]}\n{traffic_date[4]} : {traffic[4]}\n{traffic_date[5]} : {traffic[5]}\n{traffic_date[6]} : {traffic[6]}\n{traffic_date[7]} : {traffic[7]}"
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}\n{traffic_date[2]} : {traffic[2]}\n{traffic_date[3]} : {traffic[3]}\n{traffic_date[4]} : {traffic[4]}\n{traffic_date[5]} : {traffic[5]}\n{traffic_date[6]} : {traffic[6]}\n{traffic_date[7]} : {traffic[7]}\n{traffic_date[8]} : {traffic[8]}"
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}\n{traffic_date[2]} : {traffic[2]}\n{traffic_date[3]} : {traffic[3]}\n{traffic_date[4]} : {traffic[4]}\n{traffic_date[5]} : {traffic[5]}\n{traffic_date[6]} : {traffic[6]}\n{traffic_date[7]} : {traffic[7]}\n{traffic_date[8]} : {traffic[8]}\n{traffic_date[9]} : {traffic[9]}"
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}\n{traffic_date[2]} : {traffic[2]}\n{traffic_date[3]} : {traffic[3]}\n{traffic_date[4]} : {traffic[4]}\n{traffic_date[5]} : {traffic[5]}\n{traffic_date[6]} : {traffic[6]}\n{traffic_date[7]} : {traffic[7]}\n{traffic_date[8]} : {traffic[8]}\n{traffic_date[9]} : {traffic[9]}\n{traffic_date[10]} : {traffic[10]}"
+                except:
+                    pass
+                try:
+                    traffics = f"{traffic_date[0]} : {traffic[0]}\n{traffic_date[1]} : {traffic[1]}\n{traffic_date[2]} : {traffic[2]}\n{traffic_date[3]} : {traffic[3]}\n{traffic_date[4]} : {traffic[4]}\n{traffic_date[5]} : {traffic[5]}\n{traffic_date[6]} : {traffic[6]}\n{traffic_date[7]} : {traffic[7]}\n{traffic_date[8]} : {traffic[8]}\n{traffic_date[9]} : {traffic[9]}\n{traffic_date[10]} : {traffic[10]}\n{traffic_date[11]} : {traffic[11]}" 
+                except:
+                    pass
 
 
 
@@ -501,13 +735,13 @@ def flippa_scrape():
                 'Website': name,
                 'Id': ids,
                 'Url': link,
-                'Domain': a1,
+                'Domain': website_url,
                 'Platform': platform,
                 'Industry':b1,
                 'Country':c1,
                 'Category':d1,
                 'Monetization':e1,
-                'Site Age': f1,
+                'Site Age': site_age,
                 'Avg net profit per Month $': g1,
                 'Avg revenue per month': avg_rev_per_month,
                 'Avg monthly traffic unique': h1,
@@ -538,7 +772,7 @@ def flippa_scrape():
             data.append(lists)
     #         print(data)
     df1 = pd.DataFrame(data)
-    df = df1.drop_duplicates(subset=['Domain', 'Bid Price', 'Seller Name','Backlinks Number'], keep=False).reset_index(drop=True)
+    df = df1.drop_duplicates(subset=['Domain', 'Bid Price', 'Seller Name'], keep=False).reset_index(drop=True)
     df.to_csv(f'{date_time1}.csv',encoding='utf-8-sig', index=False)
     sleep(3)
     
@@ -583,7 +817,7 @@ while True:
     time1 = soup.find('span',attrs= {'id':'ct'}).get_text().lower()
     print(time1)
     time = time1[:5]
-    
+
     if 'am' in str(time1):
         if '8:10' in str(time):
             flippa_scrape()
@@ -603,5 +837,6 @@ while True:
             flippa_scrape()
         elif '8:18' in str(time):
             flippa_scrape()
+        
         
     sleep(179)
