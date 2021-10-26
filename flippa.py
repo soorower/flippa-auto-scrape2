@@ -506,6 +506,11 @@ def flippa_scrape():
         #----------------------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------
+            try:
+                b1 = soup.find('div',attrs = {'class':'Onboarding__content mb-4 mb-md-6'}).find('h6').get_text().strip()
+            except:
+                b1 = '-'
+                
             if website_url == '-':
                 try:
                     website_url = soup.find('div',attrs = {'class':'Onboarding__content mb-4 mb-md-6'}).find('div').find('a')['href']
