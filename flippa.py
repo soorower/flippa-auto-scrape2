@@ -50,7 +50,7 @@ def flippa_scrape():
         login_data['authenticity_token'] = soup.find('input', attrs = {'name':'authenticity_token'})['value']
 
         r = s.post(url, data = login_data, headers = headers)
-        link = 'https://flippa.com/search?filter%5Bproperty_type%5D=website,established_website,starter_site&page%5Bsize%5D=7000'
+        link = 'https://flippa.com/search?page%5Bsize%5D=7000&sort_alias=most_recent&filter%5Bproperty_type%5D=website'
         rs = s.get(link, headers= headers)
         soup = BeautifulSoup(rs.content, 'html5lib')
 
