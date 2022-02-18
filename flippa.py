@@ -53,17 +53,10 @@ def flippa_scrape():
         link = 'https://flippa.com/search?page%5Bsize%5D=7000&sort_alias=most_recent&filter%5Bproperty_type%5D=website'
         rs = s.get(link, headers= headers)
         soup = BeautifulSoup(rs.content, 'html5lib')
-
-        links1 = soup.find("div",attrs={'id':'bootstrap-scope'}).find('script',attrs= {'type':'text/javascript'}).get_text().split('const DEFAULT_SEARCH_PARAMS')[0].split('const FILTER_OPTIONS')[1][2:].split('const STATE = ')[1]
+        links1 = soup.findAll('script',attrs= {'type':'text/javascript'})[3].get_text().split('const PRESET = null;')[0].split('const FILTER_OPTIONS')[1][2:].split('const STATE = ')[1]
         links1 = links1[:-4]
-     
-        m = json.loads(links1)
+        data = json.loads(links1)
 
-
-        with open(f'{date_time1}.json', 'w') as outfile:
-            json.dump(m, outfile)
-        with open(f'{date_time1}.json','r') as file:
-            data = json.load(file)
 
         reviews_json = data.get('listings')
         for time,domains,nickname,review_1,review_2,rating1,siteages,profitpmonths,unique_traffics,bid_prices,num_bids,abouts in zip(reviews_json,reviews_json,reviews_json,reviews_json,reviews_json,reviews_json,reviews_json,reviews_json,reviews_json,reviews_json,reviews_json,reviews_json):
