@@ -506,7 +506,11 @@ def flippa_scrape():
                 
             if website_url == '-':
                 try:
-                    website_url = soup.find('div',attrs = {'class':'Onboarding__content mb-4 mb-md-6'}).find('div').find('a')['href']
+                    website_url = str(soup.find('div',attrs = {'class':'d-flex mt-4'}).find('a')['href'])
+                    if 'http' in website_url:
+                        pass
+                    else:
+                        website_url = 'https://' + website_url
                 except:
                     website_url = '-'
             if platform == '-':
@@ -831,10 +835,7 @@ while True:
             flippa_scrape()
         elif '8:16' in str(time):
             flippa_scrape()
-        elif '8:17' in str(time):
-            flippa_scrape()
-        elif '8:18' in str(time):
-            flippa_scrape()
+
         
         
     sleep(179)
