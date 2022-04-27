@@ -53,8 +53,7 @@ def flippa_scrape():
         link = 'https://flippa.com/search?page%5Bsize%5D=7000&sort_alias=most_recent&filter%5Bproperty_type%5D=website'
         rs = s.get(link, headers= headers)
         soup = BeautifulSoup(rs.content, 'html5lib')
-        links1 = soup.findAll('script',attrs= {'type':'text/javascript'})[3].get_text().split('const PRESET = null;')[0].split('const FILTER_OPTIONS')[1][2:].split('const STATE = ')[1]
-        links1 = links1[:-4]
+        links1 = soup.find('div',attrs = {'id':'bootstrap-scope'}).find('script',attrs= {'type':'text/javascript'}).text.split('const PRESET = null;')[0].split('const FILTER_OPTIONS')[1][2:].split('const STATE = ')[1].strip()[:-1]
         data = json.loads(links1)
 
 
@@ -820,22 +819,36 @@ while True:
     print(time1)
     time = time1[:5]
 
+    # if 'am' in str(time1):
+    #     if '8:10' in str(time):
+    #         flippa_scrape()
+    #     elif '8:11' in str(time):
+    #         flippa_scrape()
+    #     elif '8:12' in str(time):
+    #         flippa_scrape()
+    #     elif '8:13' in str(time):
+    #         flippa_scrape()
+    #     elif '8:14' in str(time):
+    #         flippa_scrape()
+    #     elif '8:15' in str(time):
+    #         flippa_scrape()
+    #     elif '8:16' in str(time):
+    #         flippa_scrape()
     if 'am' in str(time1):
-        if '8:10' in str(time):
+        if '11:15' in str(time):
             flippa_scrape()
-        elif '8:11' in str(time):
+        elif '11:16' in str(time):
             flippa_scrape()
-        elif '8:12' in str(time):
+        elif '11:17' in str(time):
             flippa_scrape()
-        elif '8:13' in str(time):
+        elif '11:18' in str(time):
             flippa_scrape()
-        elif '8:14' in str(time):
+        elif '11:19' in str(time):
             flippa_scrape()
-        elif '8:15' in str(time):
+        elif '11:20' in str(time):
             flippa_scrape()
         elif '8:16' in str(time):
             flippa_scrape()
-
         
         
     sleep(179)
