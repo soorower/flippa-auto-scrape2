@@ -834,21 +834,21 @@ while True:
     #         flippa_scrape()
     #     elif '8:16' in str(time):
     #         flippa_scrape()
-    if 'pm' in str(time1):
-        if '12:45' in str(time):
-            flippa_scrape()
-        elif '12:46' in str(time):
-            flippa_scrape()
-        elif '12:47' in str(time):
-            flippa_scrape()
-        elif '12:48' in str(time):
-            flippa_scrape()
-        elif '12:49' in str(time):
-            flippa_scrape()
-        elif '12:50' in str(time):
-            flippa_scrape()
-        elif '12:51' in str(time):
-            flippa_scrape()
+    # if 'pm' in str(time1):
+    if '12:50' in str(time):
+        flippa_scrape()
+    elif '12:51' in str(time):
+        flippa_scrape()
+    elif '12:52' in str(time):
+        flippa_scrape()
+    elif '12:53' in str(time):
+        flippa_scrape()
+    elif '12:54' in str(time):
+        flippa_scrape()
+    elif '12:55' in str(time):
+        flippa_scrape()
+    elif '12:56' in str(time):
+        flippa_scrape()
         
         
     sleep(179)
